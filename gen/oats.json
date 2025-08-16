@@ -1,0 +1,9 @@
+{
+  "schema": "http://localhost:8000/openapi.json",
+  "output": "src/api/types.ts",
+  "options": {
+    "includeHelpers": true,
+    "versionCheck": false,
+    "dateFormat": "string"
+  }
+}
