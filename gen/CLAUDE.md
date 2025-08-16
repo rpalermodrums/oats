@@ -38,3 +38,22 @@ This is a minimal OpenAPI to TypeScript code generator with a straightforward pi
 - `vitest.config.ts` - Test configuration for Node environment
 
 The tool outputs a single TypeScript file containing all generated types, designed for importing into client applications for type-safe API interactions.
+
+## Testing & Framework Integration
+
+**Django REST Framework Integration:**
+- Successfully tested with django-spectacular for OpenAPI schema generation
+- Handles complex API structures including nested relationships, pagination, and CRUD operations
+- Test setup in `test-django-api/` directory with User/Post models and ViewSets
+- Django server runs on port 8001 during testing to avoid conflicts
+
+**Test Commands:**
+- Django: `cd test-django-api && source venv/bin/activate && python manage.py runserver 8001`
+- Generate from Django: `npm run dev -- gen http://localhost:8001/api/schema/`
+- Or download first: `curl -H "Accept: application/json" http://localhost:8001/api/schema/ -o schema.json`
+
+The generator correctly handles django-spectacular's output including:
+- Model serializers with proper field types and optionality
+- ViewSet endpoints with pagination parameters
+- Foreign key relationships and nested data
+- Custom actions like `/users/{id}/posts/`
