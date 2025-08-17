@@ -8,38 +8,42 @@ export const CreatePostSchema = z.object({
   title: z.string().max(200),
   content: z.string(),
   author: z.number().int(),
-  published: z.boolean().optional()
+  published: z.boolean().optional(),
 });
 
 export const PaginatedPostListSchema = z.object({
   count: z.number().int(),
   next: z.string().url().optional(),
   previous: z.string().url().optional(),
-  results: z.array(z.object({
-  id: z.number().int(),
-  title: z.string().max(200),
-  content: z.string(),
-  author: z.number().int(),
-  author_name: z.string(),
-  published: z.boolean().optional(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime()
-}))
+  results: z.array(
+    z.object({
+      id: z.number().int(),
+      title: z.string().max(200),
+      content: z.string(),
+      author: z.number().int(),
+      author_name: z.string(),
+      published: z.boolean().optional(),
+      created_at: z.string().datetime(),
+      updated_at: z.string().datetime(),
+    }),
+  ),
 });
 
 export const PaginatedUserListSchema = z.object({
   count: z.number().int(),
   next: z.string().url().optional(),
   previous: z.string().url().optional(),
-  results: z.array(z.object({
-  id: z.number().int(),
-  email: z.string().email().max(254),
-  first_name: z.string().max(50),
-  last_name: z.string().max(50),
-  is_active: z.boolean().optional(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime()
-}))
+  results: z.array(
+    z.object({
+      id: z.number().int(),
+      email: z.string().email().max(254),
+      first_name: z.string().max(50),
+      last_name: z.string().max(50),
+      is_active: z.boolean().optional(),
+      created_at: z.string().datetime(),
+      updated_at: z.string().datetime(),
+    }),
+  ),
 });
 
 export const PatchedPostSchema = z.object({
@@ -50,7 +54,7 @@ export const PatchedPostSchema = z.object({
   author_name: z.string().optional(),
   published: z.boolean().optional(),
   created_at: z.string().datetime().optional(),
-  updated_at: z.string().datetime().optional()
+  updated_at: z.string().datetime().optional(),
 });
 
 export const PatchedUserSchema = z.object({
@@ -60,7 +64,7 @@ export const PatchedUserSchema = z.object({
   last_name: z.string().max(50).optional(),
   is_active: z.boolean().optional(),
   created_at: z.string().datetime().optional(),
-  updated_at: z.string().datetime().optional()
+  updated_at: z.string().datetime().optional(),
 });
 
 export const PostSchema = z.object({
@@ -71,7 +75,7 @@ export const PostSchema = z.object({
   author_name: z.string(),
   published: z.boolean().optional(),
   created_at: z.string().datetime(),
-  updated_at: z.string().datetime()
+  updated_at: z.string().datetime(),
 });
 
 export const UserSchema = z.object({
@@ -81,7 +85,7 @@ export const UserSchema = z.object({
   last_name: z.string().max(50),
   is_active: z.boolean().optional(),
   created_at: z.string().datetime(),
-  updated_at: z.string().datetime()
+  updated_at: z.string().datetime(),
 });
 
 // Runtime validators
@@ -89,11 +93,15 @@ export const validateCreatePost = (data: unknown): z.infer<typeof CreatePostSche
   return CreatePostSchema.parse(data);
 };
 
-export const validatePaginatedPostList = (data: unknown): z.infer<typeof PaginatedPostListSchema> => {
+export const validatePaginatedPostList = (
+  data: unknown,
+): z.infer<typeof PaginatedPostListSchema> => {
   return PaginatedPostListSchema.parse(data);
 };
 
-export const validatePaginatedUserList = (data: unknown): z.infer<typeof PaginatedUserListSchema> => {
+export const validatePaginatedUserList = (
+  data: unknown,
+): z.infer<typeof PaginatedUserListSchema> => {
   return PaginatedUserListSchema.parse(data);
 };
 

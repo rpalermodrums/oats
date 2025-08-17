@@ -3,17 +3,17 @@
 // API Version: 1.0.0
 
 export interface Paths {
-  "/api/posts/": {
+  '/api/posts/': {
     get: {
       parameters: {
         query?: {
-        page?: number;
+          page?: number;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -21,29 +21,29 @@ export interface Paths {
     post: {
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         201: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
     };
   };
-  "/api/posts/{id}/": {
+  '/api/posts/{id}/': {
     get: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -51,18 +51,18 @@ export interface Paths {
     put: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -70,18 +70,18 @@ export interface Paths {
     patch: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -89,24 +89,23 @@ export interface Paths {
     delete: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
-      responses: {
-      };
+      responses: {};
     };
   };
-  "/api/users/": {
+  '/api/users/': {
     get: {
       parameters: {
         query?: {
-        page?: number;
+          page?: number;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -114,29 +113,29 @@ export interface Paths {
     post: {
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         201: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
     };
   };
-  "/api/users/{id}/": {
+  '/api/users/{id}/': {
     get: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -144,18 +143,18 @@ export interface Paths {
     put: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -163,18 +162,18 @@ export interface Paths {
     patch: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
       requestBody: {
         content: {
-          "application/json": Record<string, unknown>;
+          'application/json': Record<string, unknown>;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -182,27 +181,26 @@ export interface Paths {
     delete: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
       };
-      responses: {
-      };
+      responses: {};
     };
   };
-  "/api/users/{id}/posts/": {
+  '/api/users/{id}/posts/': {
     get: {
       parameters: {
         path: {
-        id: number;
+          id: number;
         };
         query?: {
-        page?: number;
+          page?: number;
         };
       };
       responses: {
         200: {
           content: {
-            "application/json": Record<string, unknown>;
+            'application/json': Record<string, unknown>;
           };
         };
       };
@@ -277,14 +275,13 @@ export interface User {
 export type ResponseBody<
   P extends keyof Paths,
   M extends keyof Paths[P],
-  S extends number = 200
-> = Paths[P][M] extends { responses: Record<S, { content: { "application/json": infer R } }> }
+  S extends number = 200,
+> = Paths[P][M] extends { responses: Record<S, { content: { 'application/json': infer R } }> }
   ? R
   : never;
 
-export type RequestBody<
-  P extends keyof Paths,
-  M extends keyof Paths[P]
-> = Paths[P][M] extends { requestBody: { content: { "application/json": infer R } } }
+export type RequestBody<P extends keyof Paths, M extends keyof Paths[P]> = Paths[P][M] extends {
+  requestBody: { content: { 'application/json': infer R } };
+}
   ? R
   : never;

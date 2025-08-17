@@ -1,0 +1,7 @@
+dist/
+node_modules/
+test-django-api/
+*.json
+*.md
+.git/
+coverage/
