@@ -10,11 +10,15 @@ A minimal OpenAPI→TypeScript generator that prioritizes simplicity, reliabilit
 - ✅ **Helper Types** - Includes utility types for extracting request/response types
 - ✅ **Local & Remote** - Supports both local files and HTTP URLs
 - ✅ **Framework Ready** - Tested with Django REST Framework + django-spectacular
+- ✅ **Runtime Validation** - Optional Zod schema generation for runtime type safety
 
 ## Installation
 
 ```bash
 npm install @oats/gen
+
+# Optional: Install Zod for runtime validation
+npm install zod
 ```
 
 ## Quick Start
@@ -161,6 +165,64 @@ class ApiClient {
 }
 ```
 
+## Runtime Validation with Zod
+
+Enable Zod schema generation for runtime type safety:
+
+```json
+{
+  "schema": "http://localhost:8000/openapi.json",
+  "output": "src/api/types.ts",
+  "options": {
+    "generateZod": true,
+    "zodOutput": "src/api/types.zod.ts"  // Optional, defaults to types.zod.ts
+  }
+}
+```
+
+### Using Generated Zod Schemas
+
+```typescript
+import { UserSchema, validateUser, safeParseUser } from './api/types.zod';
+
+// Validate API response (throws on invalid data)
+async function getUser(id: number) {
+  const response = await fetch(`/api/users/${id}/`);
+  const data = await response.json();
+  return validateUser(data); // Throws ZodError if invalid
+}
+
+// Safe parsing (returns result object)
+async function safeGetUser(id: number) {
+  const response = await fetch(`/api/users/${id}/`);
+  const data = await response.json();
+  const result = safeParseUser(data);
+  
+  if (result.success) {
+    return result.data; // Typed as User
+  } else {
+    console.error('Validation failed:', result.error);
+    throw new Error('Invalid API response');
+  }
+}
+
+// Use schemas directly
+const userData = { /* ... */ };
+const user = UserSchema.parse(userData); // Runtime validation
+```
+
+### Zod Features
+
+Generated Zod schemas include:
+- **Email validation** for email fields
+- **URL validation** for URL fields  
+- **DateTime validation** for date-time fields
+- **String length constraints** from OpenAPI maxLength
+- **Number constraints** from minimum/maximum
+- **Integer validation** for integer types
+- **Optional field handling**
+- **Enum validation** for enum types
+
 ## Configuration
 
 ### Environment Variables
@@ -172,16 +234,18 @@ class ApiClient {
 }
 ```
 
-### Options
+### All Options
 
 ```json
 {
   "schema": "http://localhost:8000/openapi.json",
   "output": "src/api/types.ts",
   "options": {
-    "includeHelpers": true,
-    "versionCheck": false,
-    "dateFormat": "string"
+    "includeHelpers": true,      // Include ResponseBody/RequestBody helpers
+    "versionCheck": false,        // Check API version compatibility
+    "dateFormat": "string",       // Date format: "string" | "Date"
+    "generateZod": false,         // Generate Zod schemas
+    "zodOutput": "src/api/schemas.ts"  // Custom Zod output path
   }
 }
 ```

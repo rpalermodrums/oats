@@ -3,6 +3,7 @@
 import { fetchSchema } from './fetcher';
 import { validateSchema } from './validator';
 import { generateTypes } from './generator';
+import { generateZodSchemas } from './zod-generator';
 import { loadConfig, initConfig, type Config } from './config';
 import { writeFile, mkdir } from 'fs/promises';
 import { resolve, dirname } from 'path';
@@ -62,6 +63,20 @@ async function generate(urlOverride?: string) {
   
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, output, 'utf-8');
+  
+  // Generate Zod schemas if enabled
+  if (config.options?.generateZod) {
+    console.log('🔧 Generating Zod schemas...');
+    const zodOutput = await generateZodSchemas(validated, config);
+    
+    // Determine Zod output path
+    const zodOutputPath = config.options.zodOutput 
+      ? resolve(process.cwd(), config.options.zodOutput)
+      : outputPath.replace(/\.ts$/, '.zod.ts');
+    
+    console.log(`💾 Writing Zod schemas to ${zodOutputPath}...`);
+    await writeFile(zodOutputPath, zodOutput, 'utf-8');
+  }
   
   console.log('✅ Done!');
 }

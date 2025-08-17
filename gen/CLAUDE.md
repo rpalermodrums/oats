@@ -24,13 +24,16 @@ This is a minimal OpenAPI to TypeScript code generator with a straightforward pi
 2. **Fetcher** (`src/fetcher.ts`) - Downloads OpenAPI schemas from URLs or local files
 3. **Validator** (`src/validator.ts`) - Validates OpenAPI schema format
 4. **Generator** (`src/generator.ts`) - Core type generation engine that converts OpenAPI schemas to TypeScript
-5. **Config** (`src/config.ts`) - Configuration management for oats.json
+5. **Zod Generator** (`src/zod-generator.ts`) - Optional Zod schema generation for runtime validation
+6. **Config** (`src/config.ts`) - Configuration management for oats.json
 
 **Key Generation Logic:**
 - Creates a `Paths` interface mapping API endpoints to their request/response types
 - Generates TypeScript interfaces from OpenAPI components/schemas
 - Includes helper types (`ResponseBody`, `RequestBody`) for extracting types from the Paths interface
 - Supports path/query parameters, request bodies, and response types
+- Optional Zod schema generation with runtime validators and safe parsers
+- Zod schemas include format validation (email, URL, datetime) and constraints (min/max length)
 
 **Configuration:**
 - `oats.json` - Main config file with schema URL, output path, and options

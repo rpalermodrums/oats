@@ -8,6 +8,8 @@ export interface Config {
     includeHelpers?: boolean;
     versionCheck?: boolean;
     dateFormat?: 'string' | 'Date';
+    generateZod?: boolean;
+    zodOutput?: string;
   };
 }
 
@@ -41,7 +43,8 @@ export async function initConfig(): Promise<void> {
     options: {
       includeHelpers: true,
       versionCheck: false,
-      dateFormat: 'string'
+      dateFormat: 'string',
+      generateZod: false
     }
   };
   

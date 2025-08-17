@@ -4,6 +4,7 @@
   "options": {
     "includeHelpers": true,
     "versionCheck": false,
-    "dateFormat": "string"
+    "dateFormat": "string",
+    "generateZod": true
   }
 }
