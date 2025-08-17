@@ -1,0 +1,8 @@
+{
+  "schema": "http://localhost:8000/api/schema/",
+  "output": "src/api/types.ts",
+  "options": {
+    "generateZod": true,
+    "zodOutput": "src/api/types.zod.ts"
+  }
+}

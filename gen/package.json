@@ -13,18 +13,22 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "test": "vitest",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "watch": "tsx src/index.ts watch",
+    "watch:quiet": "tsx src/index.ts watch --quiet",
+    "gen": "tsx src/index.ts gen",
+    "gen:check": "tsx src/index.ts gen --check"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.0.0",
-    "openapi-types": "^12.0.0",
-    "chokidar": "^3.5.0"
+    "chokidar": "^3.6.0",
+    "openapi-types": "^12.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.11",
+    "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0",
-    "tsx": "^4.0.0",
     "zod": "^3.22.0"
   },
   "peerDependencies": {

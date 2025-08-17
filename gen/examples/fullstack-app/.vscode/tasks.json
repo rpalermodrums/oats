@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch API Types",
+      "type": "shell",
+      "command": "npx oats watch --quiet",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(Error:.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^👀 Watching",
+          "endsPattern": "^✅"
+        }
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "Generate Types Once",
+      "type": "shell",
+      "command": "npx oats gen",
+      "problemMatcher": []
+    }
+  ]
+}

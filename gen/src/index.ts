@@ -28,7 +28,9 @@ async function main() {
         const watchOptions = {
           quiet: args.includes('--quiet'),
           interval: getArgValue(args, '--interval') || 2000,
-          diffOnly: !args.includes('--no-diff')
+          diffOnly: !args.includes('--no-diff'),
+          retries: getArgValue(args, '--retries') || 3,
+          notify: args.includes('--notify')
         };
         await watchCommand(args[1], watchOptions);
         break;

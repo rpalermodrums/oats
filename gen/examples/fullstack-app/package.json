@@ -1,0 +1,18 @@
+{
+  "name": "fullstack-app-example",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\" --kill-others-on-fail",
+    "dev:backend": "python manage.py runserver",
+    "dev:frontend": "next dev",
+    "dev:types": "oats watch --quiet",
+    "dev:types:verbose": "oats watch",
+    "build": "npm run gen && next build",
+    "gen": "oats gen",
+    "gen:check": "oats gen && git diff --exit-code src/api/types.ts"
+  },
+  "devDependencies": {
+    "@oats/gen": "^0.1.0",
+    "concurrently": "^8.0.0"
+  }
+}

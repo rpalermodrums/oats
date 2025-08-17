@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  type-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Generate fresh types from API
+        run: npx oats gen ${{ secrets.API_URL }}/schema
+        env:
+          API_URL: ${{ secrets.API_URL }}
+        
+      - name: Check for uncommitted type changes
+        run: |
+          if [[ -n $(git status --porcelain src/api/types.ts) ]]; then
+            echo "❌ Error: Generated types are out of sync with API"
+            echo "Please run 'npm run gen' locally and commit the changes"
+            git diff src/api/types.ts
+            exit 1
+          fi
+          echo "✅ Types are up to date"
+          
+      - name: Run TypeScript type check
+        run: npm run typecheck
+        
+      - name: Run tests
+        run: npm test

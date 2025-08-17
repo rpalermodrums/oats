@@ -271,16 +271,89 @@ npx oats watch --interval 5000
 # Quiet mode (only show errors)
 npx oats watch --quiet
 
+# Watch with retries for flaky connections
+npx oats watch --retries 10
+
+# Watch with desktop notifications
+npx oats watch --notify
+
 # Watch a specific URL
 npx oats watch http://localhost:8000/api/schema/
 ```
 
 **Features:**
-- 🔄 **Smart diffing** - Only regenerates when schema actually changes
-- 📁 **File watching** - Instant updates for local schema files
+- 🔄 **Smart diffing** - Only regenerates when schema actually changes (hash comparison)
+- 📁 **File watching** - Instant updates for local schema files using chokidar
 - 🌐 **HTTP polling** - Configurable intervals for remote schemas
-- 🔁 **Auto-retry** - Handles temporary backend failures gracefully
+- 🔁 **Auto-retry** - Handles temporary backend failures with exponential backoff
 - 🤫 **Quiet mode** - Reduce console noise during development
+- 🔔 **Notifications** - Optional desktop notifications on schema changes
+
+### Developer Workflow Integration
+
+#### Single Command Development
+
+Add to your `package.json` for a seamless fullstack workflow:
+
+```json
+{
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\" --kill-others-on-fail",
+    "dev:backend": "python manage.py runserver",
+    "dev:frontend": "next dev",
+    "dev:types": "oats watch --quiet"
+  }
+}
+```
+
+Now just run `npm run dev` to start everything with automatic type synchronization.
+
+#### VS Code Integration
+
+Create `.vscode/tasks.json` for automatic type watching on project open:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch API Types",
+      "type": "shell",
+      "command": "npx oats watch --quiet",
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
+```
+
+#### CI/CD Pipeline
+
+Ensure types stay in sync with the API in your CI pipeline:
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+on: [push, pull_request]
+
+jobs:
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm ci
+      - run: npx oats gen ${{ secrets.API_URL }}/schema
+      - name: Check for uncommitted changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Types are out of sync with API"
+            git diff
+            exit 1
+          fi
+```
 
 ## Why @oats/gen?
 

@@ -15,6 +15,7 @@ interface WatchOptions {
   quiet?: boolean;
   diffOnly?: boolean;
   retries?: number;
+  notify?: boolean;
 }
 
 export class SchemaWatcher extends EventEmitter {
@@ -32,6 +33,7 @@ export class SchemaWatcher extends EventEmitter {
       quiet: false,
       diffOnly: true,
       retries: 3,
+      notify: false,
       ...options
     };
   }
@@ -157,6 +159,19 @@ export class SchemaWatcher extends EventEmitter {
       if (!this.options.quiet) {
         const time = new Date().toLocaleTimeString();
         console.log(`✅ [${time}] Types regenerated successfully`);
+      }
+      
+      if (this.options.notify) {
+        try {
+          const notifier = await import('node-notifier' as any);
+          notifier.default.notify({
+            title: 'Types Updated',
+            message: 'API types regenerated successfully',
+            sound: false
+          });
+        } catch (error) {
+          // Silently fail if node-notifier is not available
+        }
       }
       
       this.emit('generated', { hash: this.lastHash });
