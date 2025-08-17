@@ -5,6 +5,7 @@ import { validateSchema } from './validator';
 import { generateTypes } from './generator';
 import { generateZodSchemas } from './zod-generator';
 import { loadConfig, initConfig, type Config } from './config';
+import { watchCommand } from './watcher';
 import { writeFile, mkdir } from 'fs/promises';
 import { resolve, dirname } from 'path';
 
@@ -21,6 +22,15 @@ async function main() {
       case 'gen':
       case undefined:
         await generate(args[1]);
+        break;
+      
+      case 'watch':
+        const watchOptions = {
+          quiet: args.includes('--quiet'),
+          interval: getArgValue(args, '--interval') || 2000,
+          diffOnly: !args.includes('--no-diff')
+        };
+        await watchCommand(args[1], watchOptions);
         break;
       
       case '--version':
@@ -79,6 +89,14 @@ async function generate(urlOverride?: string) {
   }
   
   console.log('✅ Done!');
+}
+
+function getArgValue(args: string[], flag: string): number | undefined {
+  const index = args.indexOf(flag);
+  if (index > -1 && args[index + 1]) {
+    return parseInt(args[index + 1], 10);
+  }
+  return undefined;
 }
 
 main();

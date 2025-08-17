@@ -254,7 +254,33 @@ Generated Zod schemas include:
 
 - `oats init` - Create configuration file
 - `oats gen [url]` - Generate types from schema
+- `oats watch [url]` - Watch schema for changes and regenerate automatically
 - `oats --version` - Show version
+
+### Watch Mode
+
+Keep your types in sync during development:
+
+```bash
+# Watch with default settings (polls every 2s)
+npx oats watch
+
+# Watch with custom interval (milliseconds)
+npx oats watch --interval 5000
+
+# Quiet mode (only show errors)
+npx oats watch --quiet
+
+# Watch a specific URL
+npx oats watch http://localhost:8000/api/schema/
+```
+
+**Features:**
+- 🔄 **Smart diffing** - Only regenerates when schema actually changes
+- 📁 **File watching** - Instant updates for local schema files
+- 🌐 **HTTP polling** - Configurable intervals for remote schemas
+- 🔁 **Auto-retry** - Handles temporary backend failures gracefully
+- 🤫 **Quiet mode** - Reduce console noise during development
 
 ## Why @oats/gen?
 
